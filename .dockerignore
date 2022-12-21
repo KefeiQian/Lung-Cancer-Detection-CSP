@@ -1,0 +1,12 @@
+.DS_Store
+.history
+.idea
+.vscode
+downloads/
+paper/
+projects/
+tutorial/
+README.md
+*.ipynb
+*.sh
+eval_caltech/ResultsEval/

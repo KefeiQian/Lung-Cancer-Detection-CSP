@@ -14,7 +14,7 @@ from keras_csp import losses as losses
 # get the config parameters
 C = config.Config()
 C.gpu_ids = '0'
-C.onegpu = 8 # 8 if 16GB, 16 if 32GB GPU memory
+C.onegpu = 8 # 8 if 16GB, 16 or more if 32GB GPU memory
 C.size_train = (512, 512)
 C.init_lr = 1e-4
 C.num_epochs = 120
@@ -23,10 +23,11 @@ C.offset = True
 num_gpu = len(C.gpu_ids.split(','))
 batchsize = C.onegpu * num_gpu
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
+os.environ["HDF5_USE_FILE_LOCKING"] = 'FALSE'
 
 # get the training data
-cache_ped = 'data/cache/caltech/train_gt'
-cache_emp = 'data/cache/caltech/train_nogt'
+cache_ped = 'data/cache/train_gt'
+cache_emp = 'data/cache/train_no_gt'
 with open(cache_ped, 'rb') as fid:
     ped_data = cPickle.load(fid)
 with open(cache_emp, 'rb') as fid:

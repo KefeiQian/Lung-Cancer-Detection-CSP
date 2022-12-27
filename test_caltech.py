@@ -10,9 +10,10 @@ from keras_csp import resnet50 as nn
 from tqdm import tqdm
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '1' # 0 if use GPU, since I only have one GPU, change to '1' to use CPU
+os.environ["HDF5_USE_FILE_LOCKING"] = 'FALSE'
 C = config.Config()
 C.offset = True
-cache_path = 'data/cache/caltech/test'
+cache_path = 'data/cache/test'
 with open(cache_path, 'rb') as fid:
 	val_data = cPickle.load(fid)
 num_imgs = len(val_data)

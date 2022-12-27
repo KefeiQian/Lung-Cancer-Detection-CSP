@@ -1,4 +1,3 @@
-
 .DS_Store
 .idea
 .history
@@ -23,3 +22,4 @@ eval_caltech/ResultsEval/
 !/data/models
 
 scripts/upload_output_result.py
+__pycache__/

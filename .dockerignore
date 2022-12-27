@@ -6,7 +6,7 @@ downloads/
 paper/
 projects/
 tutorial/
-README.md
+work/
+.git
 *.ipynb
-*.sh
-eval_caltech/ResultsEval/
+README.md

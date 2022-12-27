@@ -1,0 +1,1 @@
+docker build -t lung-csp:base -f Dockerfile.base .

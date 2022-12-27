@@ -56,7 +56,7 @@ def world_to_voxel_coord(world_coord, origin, spacing):
     return voxel_coord
 
 
-def extract_annotations(series_id, origins, spacings):
+def extract_annotations(series_id, origins, spacings, is_flip):
     annotations = annotations_df[annotations_df["seriesuid"] == series_id]
     if annotations.size == 0:
         return pd.DataFrame([], columns=["z", "bboxes", "filepath", "ignoreareas"])
@@ -73,7 +73,11 @@ def extract_annotations(series_id, origins, spacings):
         voxel_coord = world_to_voxel_coord(world_coord, origins, spacings).astype(int)
 
         voxel_z, voxel_y, voxel_x = voxel_coord
-        diameter = int(d / spacings[2])
+        if is_flip:
+            voxel_x = 512 - voxel_x
+            voxel_y = 512 - voxel_y
+
+        diameter = round(d / spacings[2])
 
         annotation = {"z": voxel_z, 'bboxes': np.array([
             np.array([
@@ -101,9 +105,20 @@ def process_image(series_id, subset_id, generate_picture=True):
     origins = np.array(list(reversed(itk_image.GetOrigin())))
     spacings = np.array(list(reversed(itk_image.GetSpacing())))
 
+    direction = itk_image.GetDirection()
+    direction = np.array(list(map(lambda x: round(x), direction)))
+
+    if np.any(direction != np.array([1, 0, 0, 0, 1, 0, 0, 0, 1])):
+        is_flip = True
+    else:
+        is_flip = False
+
+    if is_flip:
+        ct_scans = ct_scans[:, ::-1, ::-1]
+
     output_path = train_image_path if subset_id != test_subset_id else test_image_path
 
-    nodules_df = extract_annotations(series_id, origins, spacings)
+    nodules_df = extract_annotations(series_id, origins, spacings, is_flip)
 
     for i in tqdm(range(0, ct_scans.shape[0])):
         image_file = "{}/{}_{}.jpg".format(output_path, series_id, i)

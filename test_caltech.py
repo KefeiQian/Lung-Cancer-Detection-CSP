@@ -9,6 +9,9 @@ from keras_csp.utilsfunc import *
 from keras_csp import resnet50 as nn
 from tqdm import tqdm
 
+start_epoch = 1
+end_epoch = 30
+
 os.environ["CUDA_VISIBLE_DEVICES"] = '1' # 0 if use GPU, since I only have one GPU, change to '1' to use CPU
 os.environ["HDF5_USE_FILE_LOCKING"] = 'FALSE'
 C = config.Config()
@@ -37,14 +40,14 @@ else:
 
 if not os.path.exists(out_path):
 	os.makedirs(out_path)
+
 files = sorted(os.listdir(w_path))
-for w_ind in range(51, 121):
+for w_ind in range(start_epoch, end_epoch):
 	for f in files:
 		if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
 			cur_file = f
 			break
-	
-	
+
 	weight1 = os.path.join(w_path, cur_file)
 	print 'load weights from {}'.format(weight1)
 	model.load_weights(weight1, by_name=True)
@@ -57,19 +60,19 @@ for w_ind in range(51, 121):
 	file_lists = set()
 	start_time = time.time()
 	for f in tqdm(range(num_imgs)):
+		# filepath: data/images/1.3.6.1.4.1.14519.5.2.1.6279.6001.765459236550358748053283544075/z-154.jpg
 		filepath = val_data[f]['filepath']
 		filepath_next = val_data[f + 1]['filepath'] if f < num_imgs - 1 else val_data[f]['filepath']
 
-		full_filename = filepath.split('/')[-1][:-4]
-		mhd_file_name = full_filename.split("_")[0]
-		z_index = int(full_filename.split("_")[-1])
-		mhd_file_name_next = filepath_next.split('/')[-1].split("_")[0] + filepath.split('/')[-1].split("_")[1].split(".")[0]
+		series_id = filepath.split("/")[-2]
+		z_index = int(filepath.split("/")[-1][2:-4])
+		series_id_next = filepath_next.split('/')[-2]
 
-		output_file_path = os.path.join(res_path, "{}.txt".format(mhd_file_name))
-		
-		if mhd_file_name not in file_lists:
+		output_file_path = os.path.join(res_path, "{}.txt".format(series_id))
+
+		if series_id not in file_lists:
 			res_all = []
-			file_lists.add(mhd_file_name)
+			file_lists.add(series_id)
 
 		img = cv2.imread(filepath)
 		x_rcnn = format_img(img, C)
@@ -84,8 +87,8 @@ for w_ind in range(51, 121):
 			f_res = np.repeat(z_index, len(boxes), axis=0).reshape((-1, 1))
 			boxes[:, [2, 3]] -= boxes[:, [0, 1]]
 			res_all += np.concatenate((f_res, boxes), axis=-1).tolist()
-		
-		if f == num_imgs - 1 or mhd_file_name_next != mhd_file_name:
+
+		if f == num_imgs - 1 or series_id_next != series_id:
 			np.savetxt(output_file_path, np.array(res_all), fmt='%6f')
 
 	print time.time() - start_time

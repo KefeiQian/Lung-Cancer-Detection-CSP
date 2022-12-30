@@ -10,3 +10,4 @@ work/
 .git
 *.ipynb
 README.md
+*.example.py

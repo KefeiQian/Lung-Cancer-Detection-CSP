@@ -6,10 +6,6 @@ paper/
 projects/
 tutorial/
 
-eval_caltech/code3.2.1/
-eval_caltech/toolbox/
-eval_caltech/ResultsEval/
-
 
 /output/
 !/output/.gitignore
@@ -21,5 +17,7 @@ eval_caltech/ResultsEval/
 !/data/cache/
 !/data/models
 
-scripts/upload_output_result.py
+scripts/*.py
+!scripts/*.example.py
+
 __pycache__/

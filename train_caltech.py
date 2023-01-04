@@ -17,7 +17,7 @@ C.gpu_ids = '0'
 C.onegpu = 8 # 8 if 16GB, 16 or more if 32GB GPU memory
 C.size_train = (512, 512)
 C.init_lr = 1e-4
-C.num_epochs = 30
+C.num_epochs = 60
 C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))

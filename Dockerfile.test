@@ -1,0 +1,13 @@
+FROM lung-csp:data
+
+WORKDIR /root
+
+COPY output /root/csp/output/
+
+COPY scripts/upload_test_result.py /root/csp/scripts/
+
+COPY test_caltech.py /root/csp/
+
+COPY scripts/test.sh /root
+
+COPY data/cache/test /root/csp/data/cache/test

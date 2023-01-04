@@ -19,11 +19,9 @@ ADD keras_csp/requirements.txt requirements.txt
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple oss2 tqdm
 
-# COPY data /root/csp/data/
+COPY keras_csp /root/csp/keras_csp/
 
-# COPY keras_csp /root/csp/keras_csp/
+WORKDIR /root/csp/keras_csp/
+RUN make
 
-# WORKDIR /root/csp/keras_csp/
-# RUN make
-
-WORKDIR /root
+WORKDIR /

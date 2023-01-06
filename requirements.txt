@@ -7,7 +7,6 @@ pillow
 pyyaml
 setuptools
 jupyter
-
 scikit-learn
 torch
 scipy

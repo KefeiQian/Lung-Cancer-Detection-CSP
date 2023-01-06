@@ -9,6 +9,7 @@ tutorial/
 
 /output/
 !/output/.gitignore
+
 /downloads/
 !/downloads/.gitignore
 
@@ -21,3 +22,4 @@ scripts/*.py
 !scripts/*.example.py
 
 __pycache__/
+

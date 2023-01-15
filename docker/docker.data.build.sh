@@ -1,1 +1,1 @@
-docker build -t lung-csp:data -f Dockerfile.data .
+docker build -t lung-csp:data -f Dockerfile.data ..

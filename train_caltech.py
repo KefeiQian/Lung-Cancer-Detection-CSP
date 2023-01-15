@@ -21,8 +21,9 @@ os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 os.environ["HDF5_USE_FILE_LOCKING"] = 'FALSE'
 
 # get the training data
-cache_ped = 'data/cache/train_gt'
-cache_emp = 'data/cache/train_no_gt'
+# cache_ped = 'data/cache/train_gt'
+cache_ped = 'data/cache/train_gt_augment'
+cache_emp = 'data/cache/train_no_gt_sample'
 with open(cache_ped, 'rb') as fid:
     ped_data = cPickle.load(fid)
 with open(cache_emp, 'rb') as fid:

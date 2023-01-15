@@ -13,3 +13,4 @@ scipy
 scikit-image
 imageio
 opencv-python
+albumentations

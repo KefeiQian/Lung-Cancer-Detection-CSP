@@ -6,10 +6,10 @@ def parse_det(Y, C, score=0.1, down=4,scale='h'):
     seman = Y[0][0, :, :, 0]
     if scale=='h':
         height = np.exp(Y[1][0, :, :, 0])*down
-        width = 0.41*height
+        width = height
     elif scale=='w':
         width = np.exp(Y[1][0, :, :, 0])*down
-        height = width/0.41
+        height = width
     elif scale=='hw':
         height = np.exp(Y[1][0, :, :, 0])*down
         width = np.exp(Y[1][0, :, :, 1])*down
@@ -35,7 +35,7 @@ def parse_det_top(Y, C, score=0.1):
     if len(y_c) > 0:
         for i in range(len(y_c)):
             h = np.exp(height[y_c[i], x_c[i]]) * 4
-            w = 0.41 * h
+            w =  h
             s = seman[y_c[i], x_c[i]]
             x1, y1 = max(0, x_c[i] * 4 + 2 - w / 2), max(0, y_c[i] * 4 + 2)
             boxs.append([x1, y1, min(x1 + w, C.size_test[1]), min(y1 + h, C.size_test[0]), s])
@@ -52,7 +52,7 @@ def parse_det_bottom(Y, C, score=0.1):
     if len(y_c) > 0:
         for i in range(len(y_c)):
             h = np.exp(height[y_c[i], x_c[i]]) * 4
-            w = 0.41 * h
+            w = h
             s = seman[y_c[i], x_c[i]]
             x1, y1 = max(0, x_c[i] * 4 + 2 - w / 2), max(0, y_c[i] * 4 + 2-h)
             boxs.append([x1, y1, min(x1 + w, C.size_test[1]), min(y1 + h, C.size_test[0]), s])
@@ -71,7 +71,7 @@ def parse_det_offset(Y, C, score=0.1,down=4):
     if len(y_c) > 0:
         for i in range(len(y_c)):
             h = np.exp(height[y_c[i], x_c[i]]) * down
-            w = 0.41*h
+            w = h
             o_y = offset_y[y_c[i], x_c[i]]
             o_x = offset_x[y_c[i], x_c[i]]
             s = seman[y_c[i], x_c[i]]

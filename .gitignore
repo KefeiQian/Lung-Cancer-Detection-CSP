@@ -10,6 +10,8 @@ tutorial/
 /output/
 !/output/.gitignore
 
+/output-*/
+
 /downloads/
 !/downloads/.gitignore
 

@@ -15,13 +15,8 @@ RUN ln -s /usr/bin/g++-5 /usr/local/cuda/bin/g++
 RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
 RUN python get-pip.py
 
-ADD keras_csp/requirements.txt requirements.txt
+ADD ../keras_csp/requirements.txt requirements.txt
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple oss2 tqdm
-
-COPY keras_csp /root/csp/keras_csp/
-
-WORKDIR /root/csp/keras_csp/
-RUN make
 
 WORKDIR /

@@ -1,0 +1,1 @@
+docker run -it --gpus=all lung-csp-all:v1 /bin/bash

@@ -13,12 +13,7 @@ from keras_csp import losses as losses
 
 # get the config parameters
 C = config.Config()
-C.gpu_ids = '0'
-C.onegpu = 8 # 8 if 16GB, 16 or more if 32GB GPU memory
-C.size_train = (512, 512)
-C.init_lr = 1e-4
-C.num_epochs = 60
-C.offset = True
+
 
 num_gpu = len(C.gpu_ids.split(','))
 batchsize = C.onegpu * num_gpu
@@ -74,6 +69,7 @@ if not os.path.exists(out_path):
     os.makedirs(out_path)
 res_file = os.path.join(out_path,'records.txt')
 
+# optimizer = Adam(lr=C.init_lr, decay=0.96)
 optimizer = Adam(lr=C.init_lr)
 if C.offset:
     model.compile(optimizer=optimizer, loss=[losses.cls_center, losses.regr_h, losses.regr_offset])
@@ -136,7 +132,7 @@ for epoch_num in range(C.num_epochs):
                 print('Elapsed time: {}'.format(time.time() - start_time))
 
                 iter_num = 0
-                start_time = time.time      ()
+                start_time = time.time()
 
                 if total_loss < best_loss:
                     print('Total loss decreased from {} to {}, saving weights'.format(best_loss, total_loss))

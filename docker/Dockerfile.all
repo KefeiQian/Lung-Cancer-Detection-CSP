@@ -1,0 +1,18 @@
+FROM lung-csp:data
+
+COPY ../keras_csp /root/csp/keras_csp/
+WORKDIR /root/csp/keras_csp/
+RUN make
+
+WORKDIR /root
+
+COPY ../scripts /root/csp/scripts/
+
+COPY ../train_caltech.py /root/csp/
+COPY ../test_caltech.py /root/csp/
+
+COPY ../data/cache/train_gt /root/csp/data/cache/train_gt
+COPY ../data/cache/train_no_gt /root/csp/data/cache/train_no_gt
+COPY ../data/cache/test /root/csp/data/cache/test
+
+COPY ../scripts/all.sh /root

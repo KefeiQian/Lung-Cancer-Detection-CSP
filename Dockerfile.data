@@ -1,4 +1,0 @@
-FROM lung-csp:base
-
-COPY data/models /root/csp/data/models
-COPY data/images /root/csp/data/images

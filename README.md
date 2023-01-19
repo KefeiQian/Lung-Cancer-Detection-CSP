@@ -19,3 +19,6 @@
 
 ## PIP China Source
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+## pre-commit hook install
+pre-commit install

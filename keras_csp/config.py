@@ -1,8 +1,8 @@
 class Config(object):
     def __init__(self):
         self.gpu_ids = '0'
-        self.onegpu = 20
-        self.num_epochs = 120
+        self.onegpu = 8
+        self.num_epochs = 95
         self.add_epoch = 0
         self.iter_per_epoch = 2000
         self.init_lr = 1e-4
@@ -11,8 +11,8 @@ class Config(object):
         # setting for network architechture
         self.network = 'resnet50'  # or 'mobilenet'
         self.point = 'center'  # or 'top', 'bottom
-        self.scale = 'h'  # or 'w', 'hw'
-        self.num_scale = 1  # 1 for height (or width) prediction, 2 for height+width prediction
+        self.scale = 'hw'  # or 'w', 'hw'
+        self.num_scale = 2  # 1 for height (or width) prediction, 2 for height+width prediction
         self.offset = True  # append offset prediction or not
         self.down = 4  # downsampling rate of the feature map for detection
         self.radius = 2  # surrounding areas of positives for the scale map

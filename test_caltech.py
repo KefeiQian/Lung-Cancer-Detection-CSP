@@ -9,7 +9,7 @@ from keras_csp.utilsfunc import *
 from keras_csp import resnet50 as nn
 from tqdm import tqdm
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '0' # 0 if use GPU, since I only have one GPU, change to '1' to use CPU
+os.environ["CUDA_VISIBLE_DEVICES"] = '1' # 0 if use GPU, since I only have one GPU, change to '1' to use CPU
 os.environ["HDF5_USE_FILE_LOCKING"] = 'FALSE'
 C = config.Config()
 
@@ -18,7 +18,6 @@ with open(cache_path, 'rb') as fid:
     val_data = cPickle.load(fid)
 num_imgs = len(val_data)
 print 'num of val samples: {}'.format(num_imgs)
-
 
 input_shape_img = (C.size_test[0], C.size_test[1], 3)
 

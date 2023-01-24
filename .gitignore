@@ -24,4 +24,4 @@ scripts/*.py
 !scripts/*.example.py
 
 __pycache__/
-
+*.pyc

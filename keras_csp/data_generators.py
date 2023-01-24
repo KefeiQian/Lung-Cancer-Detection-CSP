@@ -9,11 +9,11 @@ import cv2
 
 
 def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
-    # def gaussian(kernel):
-    #     sigma = ((kernel-1) * 0.5 - 1) * 0.3 + 0.8
-    #     s = 2*(sigma**2)
-    #     dx = np.exp(-np.square(np.arange(kernel) - int(kernel / 2)) / s)
-    #     return np.reshape(dx,(-1,1))
+    def gaussian(kernel):
+        sigma = ((kernel-1) * 0.5 - 1) * 0.3 + 0.8
+        s = 2*(sigma**2)
+        dx = np.exp(-np.square(np.arange(kernel) - int(kernel / 2)) / s)
+        return np.reshape(dx,(-1,1))
     gts = np.copy(img_data['bboxes'])
     igs = np.copy(img_data['ignoreareas'])
     scale_map = np.zeros((int(C.size_train[0] / down), int(C.size_train[1] / down), 2))
@@ -34,14 +34,14 @@ def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
             # x1, y1, x2, y2 = int(round(gts[ind, 0])), int(round(gts[ind, 1])), int(round(gts[ind, 2])), int(round(gts[ind, 3]))
             x1, y1, x2, y2 = int(np.ceil(gts[ind, 0])), int(np.ceil(gts[ind, 1])), int(gts[ind, 2]), int(gts[ind, 3])
             c_x, c_y = int((gts[ind, 0] + gts[ind, 2]) / 2), int((gts[ind, 1] + gts[ind, 3]) / 2)
-            # dx = gaussian(x2-x1)
-            # dy = gaussian(y2-y1)
-            # gau_map = np.multiply(dy, np.transpose(dx))
-            # seman_map[y1:y2, x1:x2,0] = np.maximum(seman_map[y1:y2, x1:x2,0], gau_map)
+            dx = gaussian(x2-x1)
+            dy = gaussian(y2-y1)
+            gau_map = np.multiply(dy, np.transpose(dx))
+            seman_map[y1:y2, x1:x2,0] = np.maximum(seman_map[y1:y2, x1:x2,0], gau_map)
             seman_map[y1:y2, x1:x2, 1] = 1
             seman_map[c_y, c_x, 2] = 1
 
-            r = int(abs(x2 - x1) / 2)
+            # r = int(abs(x2 - x1) / 2)
             if scale == 'h':
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(gts[ind, 3] - gts[ind, 1])
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = 1

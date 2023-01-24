@@ -1,1 +1,1 @@
-docker run -it --gpus=all -v /mnt/c/Projects/Lung-Cancer:/csp lung-csp:base /bin/bash
+docker run -it --gpus=all -v /mnt/e/Lung-Cancer:/csp lung-csp:base /bin/bash

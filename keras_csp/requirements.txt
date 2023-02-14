@@ -9,3 +9,5 @@ matplotlib
 h5py
 cython
 tqdm
+pandas
+scikit-learn

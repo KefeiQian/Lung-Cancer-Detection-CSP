@@ -13,7 +13,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '0' # 0 if use GPU, since I only have one G
 os.environ["HDF5_USE_FILE_LOCKING"] = 'FALSE'
 C = config.Config()
 
-cache_path = 'data/cache/test_all'
+# cache_path = 'data/cache/test_all'
+cache_path = 'data/cache/test'
 with open(cache_path, 'rb') as fid:
     val_data = cPickle.load(fid)
 num_imgs = len(val_data)
@@ -38,8 +39,8 @@ if not os.path.exists(out_path):
     os.makedirs(out_path)
 
 files = sorted(os.listdir(w_path))
-# for w_ind in range(1, C.num_epochs + 1):
-for w_ind in range(83, 91):
+for w_ind in range(1, C.num_epochs + 1):
+# for w_ind in range(83, 91):
     for f in files:
         if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
             cur_file = f

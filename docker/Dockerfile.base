@@ -4,19 +4,57 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list
 
 RUN apt-get update; exit 0
 
-RUN apt-get install -y aptitude build-essential libglib2.0-0 curl libsm6 libxrender1 libfontconfig1 libxext6 vim
-
-RUN aptitude install -y python-dev
-
+RUN apt-get install -y aptitude
+RUN apt-get install -y build-essential vim git wget
 RUN apt-get install -y gcc-5 g++-5
+RUN apt-get install -y libglib2.0-0 libsm6 libxrender1 libfontconfig1 libxext6 zlib1g-dev libffi-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libgl1 libbz2-dev
+
 RUN ln -s /usr/bin/gcc-5 /usr/local/cuda/bin/gcc
 RUN ln -s /usr/bin/g++-5 /usr/local/cuda/bin/g++
 
-RUN curl https://bootstrap.pypa.io/pip/2.7/get-pip.py --output get-pip.py
-RUN python get-pip.py
+RUN aptitude install -y python-dev
+RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py
+RUN python2.7 get-pip.py
 
-ADD ../keras_csp/requirements.txt requirements.txt
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple oss2 tqdm
+RUN apt-get install -y curl
+
+WORKDIR /usr/src
+RUN wget https://www.openssl.org/source/openssl-1.1.1s.tar.gz
+RUN tar -xzf openssl-1.1.1s.tar.gz
+WORKDIR /usr/src/openssl-1.1.1s
+RUN ./config --prefix=/usr/local/openssl11 --libdir=lib --openssldir=/etc/ssl shared zlib
+RUN make -j1 depend
+RUN make -j4
+RUN make install_sw
+
+WORKDIR /software
+RUN wget http://www.zlib.net/fossils/zlib-1.2.9.tar.gz
+RUN tar -xzf zlib-1.2.9.tar.gz
+WORKDIR /software/zlib-1.2.9
+RUN ./configure
+RUN make -j4
+RUN make install
+
+WORKDIR /software
+RUN curl https://src.fedoraproject.org/lookaside/pkgs/bzip2/bzip2-1.0.6.tar.gz/00b516f4704d4a7cb50a1d97e6e8e15b/bzip2-1.0.6.tar.gz --silent --output bzip2-1.0.6.tar.gz
+RUN tar -xzf bzip2-1.0.6.tar.gz
+WORKDIR /software/bzip2-1.0.6
+RUN make -f Makefile-libbz2_so
+RUN make
+RUN make install
+
+RUN wget https://www.python.org/ftp/python/3.10.8/Python-3.10.8.tar.xz
+RUN tar -xvf Python-3.10.8.tar.xz
+WORKDIR Python-3.10.8
+RUN ./configure --enable-optimizations --with-openssl=/usr/local/openssl11 --with-openssl-rpath=auto
+RUN make -j4
+RUN make altinstall
+
+
+ADD ../keras_csp/requirements.txt requirements-py27.txt
+RUN python2.7 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements-py27.txt
+
+ADD requirements.txt requirements-py3.txt
+RUN python3.10 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements-py3.txt
 
 WORKDIR /

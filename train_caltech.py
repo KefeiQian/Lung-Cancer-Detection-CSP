@@ -14,7 +14,6 @@ from keras_csp import losses as losses
 # get the config parameters
 C = config.Config()
 
-
 num_gpu = len(C.gpu_ids.split(','))
 batchsize = C.onegpu * num_gpu
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
@@ -135,7 +134,9 @@ for epoch_num in range(C.num_epochs):
                 iter_num = 0
                 start_time = time.time()
 
-                if total_loss < best_loss:
+                print("total loss", total_loss)
+
+                if total_loss < best_loss and total_loss > 0:
                     print('Total loss decreased from {} to {}, saving weights'.format(best_loss, total_loss))
                     best_loss = total_loss
                 model_tea.save_weights(os.path.join(out_path, 'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss)))

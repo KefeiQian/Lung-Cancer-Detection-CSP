@@ -1,8 +1,8 @@
 class Config(object):
     def __init__(self):
         self.gpu_ids = '0'
-        self.onegpu = 16
-        self.num_epochs = 100
+        self.onegpu = 18
+        self.num_epochs = 150
         self.add_epoch = 0
         self.iter_per_epoch = 2000
         self.init_lr = 1e-4

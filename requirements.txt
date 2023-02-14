@@ -1,7 +1,6 @@
 matplotlib
 numpy
 pandas
-simpleitk
 tqdm
 pillow
 pyyaml
@@ -18,3 +17,4 @@ python-dateutil
 nbstripout
 pre-commit
 pylint
+simpleitk
